@@ -1,0 +1,11 @@
+{
+  "name": "fourmi-access-manager",
+  "version": "1.0.0",
+  "description": "a module for handling access control in your application through their roles",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "fourmiTeam",
+  "license": "ISC"
+}

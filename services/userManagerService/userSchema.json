@@ -1,0 +1,16 @@
+{
+    "title": "userSchema",
+    "description": "user schema for request data validation",
+    "type": "object",
+    "properties": {
+        "fullName": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 5
+        },
+        "phoneNumber": {
+            "type": "string"
+        }
+    },
+    "additionalProperties": true
+}
