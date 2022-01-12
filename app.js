@@ -8,6 +8,7 @@ const config = require("./utils/initializer");
 const bodyParser = require('body-parser');
 
 const userManagerRoutes = require('./services/userManagerService/route');
+const studentManagerRoutes = require('./services/studentManagerService/route');
 
 global.publicDir = __dirname + "/public/";
 
@@ -22,6 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use('/api',userManagerRoutes)
+app.use('/api',studentManagerRoutes)
 
 
 

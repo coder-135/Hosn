@@ -15,7 +15,6 @@ const login = async (inputData)=>{
     }
     if(userData.password === inputData.password) {
       const accessToken = generate.access(userData.phoneNumber);
-      const refreshToken = generate.refresh(userData.phoneNumber);
 
       return {
         status:'success',
@@ -23,7 +22,6 @@ const login = async (inputData)=>{
           message: 'به سامانه حُـسن خوش آمدید',
           result:{
             accessToken,
-            refreshToken,
             userData
           }
         }
@@ -52,6 +50,6 @@ const login = async (inputData)=>{
 
 
 module.exports = {
-  login,
+  login
 }
 
