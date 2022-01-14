@@ -1,126 +1,36 @@
 let config = require('./../../../utils/initializer');
-const {Code} = require("mongodb");
-const { query } = require('express');
-// const id = require("ajv/lib/vocabularies/core/id");
 
 
-const updateAvatar = async (input) => {
-  try {
-    await config.mongoDB.collection('users').updateOne({uid: input.userId}, {$set: {avatar: input.avatarUrl}});
-  } catch (err) {
-    throw {
-      status: 400,
-      message: err.message
-    }
+class Model {
+  constructor() {
+  }
+
+  async addsStudent(inputData){
+    await config.mongoDB.collection('students').insertOne(inputData);
+  }
+  async getStudent(inputData) {
+    return await config.mongoDB.collection('students').findOne({userId:inputData.userId},{projection:{_id:0}});
+  }
+  async updateStudent(inputData) {
+    await config.mongoDB.collection('students').updateOne({userId:inputData.userId},
+      {$set:inputData});
+    return await config.mongoDB.collection('students').findOne({userId:inputData.userId},{projection:{_id:0}});
+  }
+
+  async deleteStudent(inputData) {
+    await config.mongoDB.collection('students').deleteOne({userId:inputData.userId});
+  }
+
+  async getStudents(inputData) {
+    let result = {};
+    result.data = await config.mongoDB.collection('students').find({}).project({_id:0})
+      .sort({_id: -1})
+      .skip((inputData.page-1) * inputData.limit)
+      .limit(inputData.limit)
+      .toArray();
+    result.totalItem = await config.mongoDB.collection('students').count();
+    return result
   }
 }
 
-const deleteAvatar = async (input) => {
-  try {
-    await config.mongoDB.collection('users').updateOne({uid: input.userId}, {$set: {avatar: 'https://agrodayan.ir/uploads/avatars/avatar.png'}});
-  } catch (err) {
-    throw {
-      status: 400,
-      message: err.message
-    }
-  }
-}
-
-const staticAvatars = async ()=>{
-  try {
-   let result = await config.mongoDB.collection('staticAvatars').find({},{projection:{_id:0}}).toArray();
-   return result
-  } catch (err) {
-    throw {
-      status: 400,
-      message: err.message
-    }
-  }
-}
-
-const farmerSurvey = async (farmerSampleSurvey) => {
-  try {
-   await config.mongoDB.collection('farmerSurvey').insertOne(farmerSampleSurvey);
-
-  }
-  catch (err) {
-    throw {
-      status: 400,
-      message: err.message
-    }
-  }
-}
-
-
-
-const expertSurvey = async (expertSampleSurvey) => {
-  try {
-     await config.mongoDB.collection('expertSurvey').insertOne(expertSampleSurvey);
-  } catch (err) {
-    throw {
-      status: 400,
-      message: err.message
-    }
-  }
-}
-
-
-const getFarmerSurvey = async (query) => {
-  try {
-    const result = await config.mongoDB.collection('farmerSurvey').find(query, {projection: {_id: 0}}).toArray();
-    return result;
-  }
-  catch (err) {
-    throw {
-      status: 400,
-      message: err.message
-    }
-  }
-}
-const getExpertSurvey = async (query) => {
-  try {
-    const result = await config.mongoDB.collection('expertSurvey').find(query, {projection: {_id: 0}}).toArray();
-    return result;
-  } catch (err) {
-    throw {
-      status: 400,
-      message: err.message
-    }
-  }
-}
-
-
-
-const updateFarmerSurvey = async (surveyData, expertDataRate) => {
-  try {
-    await config.mongoDB.collection('users').updateOne({expertCode:expertDataRate.expertCode},{$set:expertDataRate});
-    await config.mongoDB.collection('farmerSurvey').updateOne({id:surveyData.id},{$set:surveyData});
-  } catch (err) {
-    throw {
-      status: 400,
-      message: err.message
-    }
-  }
-}
-const updateExpertSurvey = async (surveyData) => {
-  try {
-    await config.mongoDB.collection('expertSurvey').updateOne({id:surveyData.id},{$set:surveyData});
-  } catch (err) {
-    throw {
-      status: 400,
-      message: err.message
-    }
-  }
-}
-
-module.exports = {
-  updateAvatar,
-  deleteAvatar,
-  staticAvatars,
-  farmerSurvey,
-  expertSurvey,
-  getFarmerSurvey,
-  getExpertSurvey,
-  updateFarmerSurvey,
-  updateExpertSurvey
-}
+module.exports = Model

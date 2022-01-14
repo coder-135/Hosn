@@ -24,7 +24,37 @@ const login = async (req, res) => {
   }
 };
 
+const logout = async (req, res) => {
+  try {
+    const header = req.headers;
+    if (!header.hasOwnProperty.call(header, 'access-token')) {
+      throw {
+        data: {
+          message: 'کاربر لاگین نیست یا توکن ارسال نشده است'
+        }
+      }
+    }
+
+    res.removeHeader('access-token');
+
+
+    res.status(200).send({
+      status:'success',
+      data:{
+        message:'کاربر با موفقیت از سامانه خارج شد'
+      }
+    });
+  } catch (err) {
+    const status = err.status || 400;
+    res.status(status).send({
+      status: "fail",
+      data: err.data
+    });
+  }
+}
+
 
 module.exports = {
-  login
+  login,
+  logout
 };
