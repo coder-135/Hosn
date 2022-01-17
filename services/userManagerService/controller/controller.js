@@ -52,6 +52,24 @@ const logout = async (req, res) => {
     });
   }
 }
+const test = async (req, res) => {
+  try {
+    const header = req;
+    console.log(req);
+    res.status(200).send({
+      status:'success',
+      data:{
+        message:'کاربر با موفقیت از سامانه خارج شد'
+      }
+    });
+  } catch (err) {
+    const status = err.status || 400;
+    res.status(status).send({
+      status: "fail",
+      data: err.data
+    });
+  }
+}
 
 
 module.exports = {
