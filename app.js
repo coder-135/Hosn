@@ -30,7 +30,7 @@ app.use('/api',studentManagerRoutes)
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use((req, res) => {
-    return res.sendFile(path.join( __dirname, 'dashboardPublic' , 'index.html'));
+    return res.sendFile(path.join( __dirname, 'public' , 'index.html'));
 });
 
 
