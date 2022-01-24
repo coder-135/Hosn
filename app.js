@@ -19,12 +19,19 @@ app.use(morgan('dev'));
 app.use(express.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
-app.use(express.static(path.join(__dirname, 'public')));
+
 
 
 app.use('/api',userManagerRoutes)
 app.use('/api',studentManagerRoutes)
 
+
+
+app.use(express.static(path.join(__dirname, 'public')))
+
+app.use((req, res) => {
+    return res.sendFile(path.join( __dirname, 'dashboardPublic' , 'index.html'));
+});
 
 
 
@@ -33,8 +40,6 @@ app.all("*", (req, res) => {
         message: "آدرس درخواستی مورد نظر موجود نمی باشد.",
     });
 });
-
-
 
 
 if (dotenv.error) {
